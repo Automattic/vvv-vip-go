@@ -13,8 +13,16 @@ DB_NAME="site_name"
 SITE_URL="site-name.dev"
 # The multisite stuff for wp-config.php
 EXTRA_CONFIG="
+
+// With Development Mode, features that do not require a
+// connection to WordPress.com servers can be activated
+// on a localhost WordPress installation for testing:
+// https://jetpack.com/support/development-mode/
+define( 'JETPACK_DEV_DEBUG', true);
+
 // Any additional site specific config should be
 // placed in vip-config/vip-config.php
+
 "
 
 # ----------------------------------------------------------------
