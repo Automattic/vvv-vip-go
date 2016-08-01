@@ -113,7 +113,7 @@ else
         cd htdocs/wp-content/mu-plugins
         git pull --recurse-submodules
     )
-    echo -e "${GREEN}Success:${NC} Updated WordPress and VIP Scanner"
+    echo -e "${GREEN}Success:${NC} Updated WordPress, VIP Go MU plugins, and VIP Scanner"
 fi
 
 
