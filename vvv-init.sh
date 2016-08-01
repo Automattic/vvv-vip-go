@@ -109,6 +109,10 @@ else
 	# Make sure core and VIP Scanner are up to date
 	wp --allow-root core update
     wp --allow-root plugin update vip-scanner
+    (
+        cd htdocs/wp-content/mu-plugins
+        git pull --recurse-submodules
+    )
     echo -e "${GREEN}Success:${NC} Updated WordPress and VIP Scanner"
 fi
 
