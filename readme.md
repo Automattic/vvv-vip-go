@@ -1,23 +1,23 @@
 # How to use this example bootstrap
 
-## Basic setup
+This site bootstrap is designed to be used with [Varying Vagrants Vagrant](https://github.com/Varying-Vagrant-Vagrants/VVV/) and a WordPress single site, the code for which is stored as a monolithic (or submoduled, probably) Git(Hub) repo.
+
+# Initial configuration
+
+The following steps allow you to adapt this template to your own VIP Go client repository:
 
 1. Run a search and replace for `site-name.dev` to whatever the subdomain for your development site will be
 2. Run a search and replace for `site_name` to whatever the database name for your development site will be
 3. Run a search and replace for `Site Name` to whatever the human readable name for your development site will be
-3. Git clone a copy of your client site repo so it is in this directory and named `wp-content`; example command: `git clone --recursive https://github.com/wpcomvip/your-repo.git` (you will need to replace `https://github.com/wpcomvip/your-repo.git` with the URL for your repo: On GitHub, navigate to the main page of the repository, then under your repository name, click "Clone or download") 
 
-If you want to package these instructions for other developers in your team:
+You can now skip to "Getting up and running", or you want to package these instructions for other developers in your team by following these instructions:
 
-1. Remove these initial instructions, leaving the "Development environment bootstrap" heading and everything below it
-2. Amend the "Development environment bootstrap" heading and paragraph below so it reflects your purpose for the particular development environment
-3. Test everything works as expected in a [VVV](https://github.com/Varying-Vagrant-Vagrants/VVV/) context
-4. Copy or `git push` to a new repo or new branch in an existing repo
-5. Point people towards the `readme.md` in the repo you pushed to, so they can get going
+1. Remove these "initial configuration" instructions, leaving the "Development environment bootstrap" heading and everything below it
+2. Test everything works as expected in a [VVV](https://github.com/Varying-Vagrant-Vagrants/VVV/) context
+3. Copy or `git push` to a new repo or new branch in an existing repo
+4. Point people towards the `readme.md` in the repo you pushed to, so they can get going
 
-# Development environment bootstrap
-
-This site bootstrap is designed to be used with [Varying Vagrants Vagrant](https://github.com/Varying-Vagrant-Vagrants/VVV/) and a WordPress single site, the code for which is stored as a monolithic (or submoduled, probably) Git(Hub) repo.
+# Getting up and running
 
 To get started:
 
@@ -27,6 +27,8 @@ To get started:
 4. If your Vagrant is running, from the Vagrant directory run `vagrant halt`
 5. Followed by `vagrant up --provision`.  Perhaps a cup of tea now? The initial provisioning may take a while.
 6. If you want the user uploaded files, you'll need to download these separately
+
+Note that your `wp-content` directory will be moved into place 
 
 Then you can visit: [http://site-name.dev/](http://site-name.dev/)
 
