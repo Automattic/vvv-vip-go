@@ -72,7 +72,7 @@ if [ ! -f "htdocs/wp-config.php" ]; then
 	wp --allow-root core download --path=htdocs
     # Clone the repo, if it's not there already
     rm -rf htdocs/wp-content
-    cp -pr wp-content htdocs/wp-content
+    mv wp-content htdocs/wp-content
     echo -e "${GREEN}Success:${NC} Moved the client code repository into position"
 
     # Object cache drop-in
