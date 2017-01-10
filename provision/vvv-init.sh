@@ -6,9 +6,9 @@
 # ------------------------------------------
 
 # Just a human readable description of this site
-SITE_NAME="Site Name"
+SITE_NAME="${VVV_SITE_NAME}"
 # The name (to be) used by MySQL for the DB
-DB_NAME="site_name"
+DB_NAME="${VVV_SITE_NAME}"
 # The URL/domain for the site
 SITE_URL="site-name.dev"
 # The multisite stuff for wp-config.php
