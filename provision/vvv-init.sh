@@ -79,6 +79,14 @@ mysql -u root --password=root -e "CREATE DATABASE IF NOT EXISTS $DB_NAME; GRANT 
 if [ ! -f "htdocs/wp-config.php" ]; then
 	wp --allow-root core download --path=htdocs
     # Clone the repo, if it's not there already
+    echo -e "Cloning the client code repository"
+    if ! git clone https://github.com/wpcomvip/${VVV_SITE_NAME}/ wp-content
+    then
+        echo -e "${RED}Fallback:${NC} The sites name in vvv-custom.yml doesn't match a VIP Go client slug, cloning the VIP Go Skeleton instead"
+        git clone https://github.com/Automattic/vip-skeleton.git wp-content
+    else
+        echo -e "${GREEN}Success:${NC} Client code checked out succesfully"
+    fi
     rm -rf htdocs/wp-content
     mv wp-content htdocs/wp-content
     echo -e "${GREEN}Success:${NC} Moved the client code repository into position"
