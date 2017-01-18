@@ -14,7 +14,6 @@ touch ${VVV_PATH_TO_SITE}/logs/access.log
 
 # Install and configure the latest stable version of WordPress
 VIP_HTDOCS="${VVV_PATH_TO_SITE}/htdocs"
-echo "SW: HTDOCS ${VIP_HTDOCS}"
 mkdir -p ${VIP_HTDOCS}
 cd ${VVV_PATH_TO_SITE}/htdocs
 if ! $(wp core is-installed --allow-root); then
@@ -24,8 +23,6 @@ if ! $(wp core is-installed --allow-root); then
 
     VIP_REPO=$(get_config_value 'vip-repo')
     VIP_BRANCH=$(get_config_value 'vip-branch')
-
-    echo "SW: ${VIP_BRANCH} ${VIP_REPO}"
 
     rm -rf ${VIP_HTDOCS}/wp-content/
     echo "git clone --recursive --branch ${VIP_BRANCH} ${VIP_REPO} ${VIP_HTDOCS}/wp-content/"
