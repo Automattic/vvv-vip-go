@@ -1,5 +1,42 @@
 #!/usr/bin/env bash
 
+# Add GitHub and GitLab to known_hosts, so we don't get prompted
+# to verify the server fingerprint.
+# The fingerprints in [this repo]/ssh/known_hosts are generated as follows:
+#
+# As the starting point for the ssh-keyscan tool, create an ASCII file 
+# containing all the hosts from which you will create the known hosts 
+# file, e.g. sshhosts.
+# Each line of this file states the name of a host (alias name or TCP/IP 
+# address) and must be terminated with a carriage return line feed 
+# (Shift + Enter), e.g.
+# 
+# bitbucket.org
+# github.com
+# gitlab.com
+# 
+# Execute ssh-keyscan with the following parameters to generate the file:
+# 
+# ssh-keyscan -t rsa,dsa -f ssh_hosts >ssh/known_hosts
+# The parameter -t rsa,dsa defines the host’s key type as either rsa 
+# or dsa.
+# The parameter -f /home/user/ssh_hosts states the path of the source 
+# file ssh_hosts, from which the host names are read.
+# The parameter >ssh/known_hosts states the output path of the 
+# known_host file to be created.
+# 
+# From "Create Known Hosts Files" at: 
+# http://tmx0009603586.com/help/en/entpradmin/Howto_KHCreate.html
+mkdir -p ~/.ssh
+touch ~/.ssh/known_hosts
+IFS=$'\n'
+for KNOWN_HOST in $(cat "ssh/known_hosts"); do
+    if ! grep -Fxq "$KNOWN_HOST" ~/.ssh/known_hosts; then
+        echo $KNOWN_HOST >> ~/.ssh/known_hosts
+        echo "Success: Added host to SSH known_hosts for user 'root': $(echo $KNOWN_HOST |cut -d '|' -f1)"
+    fi
+done
+
 # Make a database, if we don't already have one
 VIP_DB_NAME=$(echo ${VVV_SITE_NAME} | sed -e 's/[-._@#$%&*]//g')
 echo -e "\nCreating database '${VVV_SITE_NAME}' (if it's not already there)"
@@ -48,43 +85,6 @@ PHP
 else
     wp core update
 fi
-
-# Add GitHub and GitLab to known_hosts, so we don't get prompted
-# to verify the server fingerprint.
-# The fingerprints in [this repo]/ssh/known_hosts are generated as follows:
-#
-# As the starting point for the ssh-keyscan tool, create an ASCII file 
-# containing all the hosts from which you will create the known hosts 
-# file, e.g. sshhosts.
-# Each line of this file states the name of a host (alias name or TCP/IP 
-# address) and must be terminated with a carriage return line feed 
-# (Shift + Enter), e.g.
-# 
-# bitbucket.org
-# github.com
-# gitlab.com
-# 
-# Execute ssh-keyscan with the following parameters to generate the file:
-# 
-# ssh-keyscan -t rsa,dsa -f ssh_hosts >ssh/known_hosts
-# The parameter -t rsa,dsa defines the host’s key type as either rsa 
-# or dsa.
-# The parameter -f /home/user/ssh_hosts states the path of the source 
-# file ssh_hosts, from which the host names are read.
-# The parameter >ssh/known_hosts states the output path of the 
-# known_host file to be created.
-# 
-# From "Create Known Hosts Files" at: 
-# http://tmx0009603586.com/help/en/entpradmin/Howto_KHCreate.html
-mkdir -p ~/.ssh
-touch ~/.ssh/known_hosts
-IFS=$'\n'
-for KNOWN_HOST in $(cat "ssh/known_hosts"); do
-    if ! grep -Fxq "$KNOWN_HOST" ~/.ssh/known_hosts; then
-        echo $KNOWN_HOST >> ~/.ssh/known_hosts
-        echo "Success: Added host to SSH known_hosts for user 'root': $(echo $KNOWN_HOST |cut -d '|' -f1)"
-    fi
-done
 
 # Add MU plugins in place
 if [ ! -d "${VIP_HTDOCS}/wp-content/mu-plugins" ]; then
