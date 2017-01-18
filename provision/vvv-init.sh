@@ -30,7 +30,7 @@
 mkdir -p ~/.ssh
 touch ~/.ssh/known_hosts
 IFS=$'\n'
-for KNOWN_HOST in $(cat "ssh/known_hosts"); do
+for KNOWN_HOST in $(cat "${VVV_PATH_TO_SITE}/ssh/known_hosts"); do
     if ! grep -Fxq "$KNOWN_HOST" ~/.ssh/known_hosts; then
         echo $KNOWN_HOST >> ~/.ssh/known_hosts
         echo "Success: Added host to SSH known_hosts for user 'root': $(echo $KNOWN_HOST |cut -d '|' -f1)"
@@ -82,6 +82,7 @@ define( 'JETPACK_DEV_DEBUG', true);
 // placed in wp-content/vip-config/vip-config.php
 PHP
 
+    wp core install --url="${VVV_SITE_NAME}.local" --quiet --title="${VVV_SITE_NAME}" --admin_name=admin --admin_email="admin@${VVV_SITE_NAME}.local" --admin_password="password"
 else
     wp core update
 fi
