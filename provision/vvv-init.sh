@@ -82,7 +82,7 @@ define( 'JETPACK_DEV_DEBUG', true);
 // placed in wp-content/vip-config/vip-config.php
 PHP
 
-    wp core install --url="${VVV_SITE_NAME}.local" --quiet --title="${VVV_SITE_NAME}" --admin_name=admin --admin_email="admin@${VVV_SITE_NAME}.local" --admin_password="password"
+    wp core install --url="${VVV_SITE_NAME}.local" --quiet --title="${VVV_SITE_NAME}" --admin_name=admin --admin_email="admin@${VVV_SITE_NAME}.local" --admin_password="password" --allow-root
 else
     wp core update
 fi
