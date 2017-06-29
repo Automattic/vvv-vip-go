@@ -51,6 +51,14 @@ touch ${VVV_PATH_TO_SITE}/logs/access.log
 
 # Install and configure the latest stable version of WordPress
 VIP_HTDOCS="${VVV_PATH_TO_SITE}/htdocs"
+
+# Allowed values for vip-is-multisite: true, yes, 1
+VIP_IS_MULTISITE=$(get_config_value 'vip-is-multisite')
+if [ "$VIP_IS_MULTISITE" == "true" ] || [ "$VIP_IS_MULTISITE" == "1" ] || [ "$VIP_IS_MULTISITE" == "yes" ]; then
+    VIP_IS_MULTISITE='true';
+fi
+echo "Multisite: $VIP_IS_MULTISITE"
+
 mkdir -p ${VIP_HTDOCS}
 cd ${VVV_PATH_TO_SITE}/htdocs
 if ! $(wp core is-installed --allow-root); then
@@ -82,7 +90,12 @@ define( 'JETPACK_DEV_DEBUG', true);
 // placed in wp-content/vip-config/vip-config.php
 PHP
 
+    if [ "$VIP_IS_MULTISITE" == "true" ]; then
+        wp core multisite-install --url="${VVV_SITE_NAME}.local" --quiet --title="${VVV_SITE_NAME}" --admin_name=admin --admin_email="admin@${VVV_SITE_NAME}.local" --admin_password="password" --allow-root
+    else
     wp core install --url="${VVV_SITE_NAME}.local" --quiet --title="${VVV_SITE_NAME}" --admin_name=admin --admin_email="admin@${VVV_SITE_NAME}.local" --admin_password="password" --allow-root
+    fi
+
 else
     wp core update
 fi
