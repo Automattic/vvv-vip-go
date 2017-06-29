@@ -97,7 +97,7 @@ PHP
     fi
 
 else
-    wp core update
+    wp core update --allow-root
 fi
 
 # Add MU plugins in place
