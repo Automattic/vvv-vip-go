@@ -93,7 +93,7 @@ PHP
     if [ "$VIP_IS_MULTISITE" == "true" ]; then
         wp core multisite-install --url="${VVV_SITE_NAME}.local" --quiet --title="${VVV_SITE_NAME}" --admin_name=admin --admin_email="admin@${VVV_SITE_NAME}.local" --admin_password="password" --allow-root
     else
-    wp core install --url="${VVV_SITE_NAME}.local" --quiet --title="${VVV_SITE_NAME}" --admin_name=admin --admin_email="admin@${VVV_SITE_NAME}.local" --admin_password="password" --allow-root
+        wp core install --url="${VVV_SITE_NAME}.local" --quiet --title="${VVV_SITE_NAME}" --admin_name=admin --admin_email="admin@${VVV_SITE_NAME}.local" --admin_password="password" --allow-root
     fi
 
 else
@@ -104,4 +104,11 @@ fi
 if [ ! -d "${VIP_HTDOCS}/wp-content/mu-plugins" ]; then
     git clone --recursive --quiet https://github.com/Automattic/vip-go-mu-plugins.git ${VIP_HTDOCS}/wp-content/mu-plugins
     echo "Cloned the VIP Go MU plugins repository"
+elif git diff-index --quiet HEAD --; then
+    git fetch --all
+    git submodule sync
+    git submodule update -q --init --recursive
+    echo "Synced changes for VIP Go MU plugins repository, removed untracked files"
+else
+    echo "Preserving changes in VIP Go MU plugins folder"
 fi
