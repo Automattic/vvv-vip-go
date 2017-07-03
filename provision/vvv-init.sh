@@ -28,7 +28,7 @@
 # From "Create Known Hosts Files" at: 
 # http://tmx0009603586.com/help/en/entpradmin/Howto_KHCreate.html
 mkdir -p ~/.ssh
-touch ~/.ssh/known_hosts
+noroot touch ~/.ssh/known_hosts
 IFS=$'\n'
 for KNOWN_HOST in $(cat "${VVV_PATH_TO_SITE}/ssh/known_hosts"); do
     if ! grep -Fxq "$KNOWN_HOST" ~/.ssh/known_hosts; then
@@ -46,8 +46,8 @@ echo -e "\n DB operations done.\n\n"
 
 # Nginx Logs
 mkdir -p ${VVV_PATH_TO_SITE}/logs
-touch ${VVV_PATH_TO_SITE}/logs/error.log
-touch ${VVV_PATH_TO_SITE}/logs/access.log
+noroot touch ${VVV_PATH_TO_SITE}/logs/error.log
+noroot touch ${VVV_PATH_TO_SITE}/logs/access.log
 
 # Install and configure the latest stable version of WordPress
 VIP_HTDOCS="${VVV_PATH_TO_SITE}/htdocs"
@@ -61,20 +61,20 @@ echo "Multisite: $VIP_IS_MULTISITE"
 
 mkdir -p ${VIP_HTDOCS}
 cd ${VVV_PATH_TO_SITE}/htdocs
-if ! $(wp core is-installed --allow-root); then
-    wp core download --path="${VVV_PATH_TO_SITE}/htdocs" --allow-root
+if ! $(noroot wp core is-installed --allow-root); then
+    noroot wp core download --path="${VVV_PATH_TO_SITE}/htdocs"
     # Initial quick and basic config, replaced later
-    wp core config --dbname="${VIP_DB_NAME}" --dbuser=wp --dbpass=wp --quiet --allow-root
+    noroot wp core config --dbname="${VIP_DB_NAME}" --dbuser=wp --dbpass=wp --quiet
 
     VIP_REPO=$(get_config_value 'vip-repo')
-    VIP_BRANCH=$(get_config_value 'vip-branch')
+    VIP_BRANCH=$(get_config_value 'vip-branch' 'master')
 
     rm -rf ${VIP_HTDOCS}/wp-content/
     echo "git clone --recursive --branch ${VIP_BRANCH} ${VIP_REPO} ${VIP_HTDOCS}/wp-content/"
-    git clone --recursive --branch ${VIP_BRANCH} ${VIP_REPO} ${VIP_HTDOCS}/wp-content
+    noroot git clone --recursive --branch ${VIP_BRANCH} ${VIP_REPO} ${VIP_HTDOCS}/wp-content
 
     rm -v "${VIP_HTDOCS}/wp-config.php"
-    wp core config --dbname="${VIP_DB_NAME}" --dbuser=wp --dbpass=wp --quiet --allow-root --extra-php <<PHP
+    noroot wp core config --dbname="${VIP_DB_NAME}" --dbuser=wp --dbpass=wp --quiet --allow-root --extra-php <<PHP
 // Additional VIP Go config via vip-config.php in the
 // client site repo
 require_once( ABSPATH . '/wp-content/vip-config/vip-config.php' );
@@ -91,23 +91,22 @@ define( 'JETPACK_DEV_DEBUG', true);
 PHP
 
     if [ "$VIP_IS_MULTISITE" == "true" ]; then
-        wp core multisite-install --url="${VVV_SITE_NAME}.local" --quiet --title="${VVV_SITE_NAME}" --admin_name=admin --admin_email="admin@${VVV_SITE_NAME}.local" --admin_password="password" --allow-root
+        noroot wp core multisite-install --url="${VVV_SITE_NAME}.local" --quiet --title="${VVV_SITE_NAME}" --admin_name=admin --admin_email="admin@${VVV_SITE_NAME}.local" --admin_password="password"
     else
-        wp core install --url="${VVV_SITE_NAME}.local" --quiet --title="${VVV_SITE_NAME}" --admin_name=admin --admin_email="admin@${VVV_SITE_NAME}.local" --admin_password="password" --allow-root
+        noroot wp core install --url="${VVV_SITE_NAME}.local" --quiet --title="${VVV_SITE_NAME}" --admin_name=admin --admin_email="admin@${VVV_SITE_NAME}.local" --admin_password="password"
     fi
-
 else
-    wp core update --allow-root
+    noroot wp core update
 fi
 
 # Add MU plugins in place
 if [ ! -d "${VIP_HTDOCS}/wp-content/mu-plugins" ]; then
-    git clone --recursive --quiet https://github.com/Automattic/vip-go-mu-plugins.git ${VIP_HTDOCS}/wp-content/mu-plugins
+    noroot git clone --recursive --quiet https://github.com/Automattic/vip-go-mu-plugins.git ${VIP_HTDOCS}/wp-content/mu-plugins
     echo "Cloned the VIP Go MU plugins repository"
 elif git diff-index --quiet HEAD --; then
-    git fetch --all
-    git submodule sync
-    git submodule update -q --init --recursive
+    noroot git fetch --all
+    noroot git submodule sync
+    noroot git submodule update -q --init --recursive
     echo "Synced changes for VIP Go MU plugins repository, removed untracked files"
 else
     echo "Preserving changes in VIP Go MU plugins folder"
