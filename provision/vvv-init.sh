@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+DOMAIN=`get_primary_host "${VVV_SITE_NAME}".dev`
+DOMAINS=`get_hosts "${DOMAIN}"`
+
 # Add GitHub and GitLab to known_hosts, so we don't get prompted
 # to verify the server fingerprint.
 # The fingerprints in [this repo]/ssh/known_hosts are generated as follows:
@@ -112,3 +115,6 @@ elif git diff-index --quiet HEAD --; then
 else
     echo "Preserving changes in VIP Go MU plugins folder"
 fi
+
+cp -f "${VVV_PATH_TO_SITE}/provision/vvv-nginx.conf.tmpl" "${VVV_PATH_TO_SITE}/provision/vvv-nginx.conf"
+sed -i "s#{{VIP_DOMAINS}}#${DOMAINS}#" "${VVV_PATH_TO_SITE}/provision/vvv-nginx.conf"
