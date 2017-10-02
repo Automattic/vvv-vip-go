@@ -80,7 +80,9 @@ if ! $(noroot wp core is-installed --allow-root); then
     noroot wp core config --dbname="${VIP_DB_NAME}" --dbuser=wp --dbpass=wp --quiet --allow-root --extra-php <<PHP
 // Additional VIP Go config via vip-config.php in the
 // client site repo
-require_once( ABSPATH . '/wp-content/vip-config/vip-config.php' );
+if ( file_exists( ABSPATH . '/wp-content/vip-config/vip-config.php' ) ) {
+    require_once( ABSPATH . '/wp-content/vip-config/vip-config.php' );
+}
 define( 'VIP_GO_ENV', 'vvv-local-dev' );
 
 // With Development Mode, features that do not require a
