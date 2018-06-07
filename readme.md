@@ -4,20 +4,16 @@ Step 0: Read the docs
 
 VVV2 [Adding a New Site](https://varyingvagrantvagrants.org/docs/en-US/adding-a-new-site/)
 
-Step 1: Ensure you have a `vvv-custom.yml` file
-
-If you don't already have a `vvv-custom.yml` file, copy `vvv-config.yml` to create this.
-
-Step 2: Add your site to  `vvv-custom.yml`
+Step 1: Add your site to  `vvv-custom.yml`
 
 Add a site block into `vvv-custom.yml`, like this:
 
 ``` yml
   name-your-site-here: 
-    repo: https://github.com/YourOrg/your-repo.git
+    repo: https://github.com/Automattic/vvv-vip-go.git
     branch: master
     hosts: 
-     - name-your-site-here.local
+     - name-your-site-here.test
     custom:
       vip-repo: git@github.com:wpcomvip/demo.git
       vip-branch: master
@@ -34,19 +30,20 @@ For comparison, you'll end up with something like this:
 ``` yml
   vip-go-demo: 
     repo: https://github.com/Automattic/vvv-vip-go.git
-    branch: develop
+    branch: master
     hosts: 
-     - vip-go-demo.local
+     - vip-go-demo.test
     custom:
       vip-repo: git@github.com:wpcomvip/demo.git
       vip-branch: master
 ```
 
-Same your `vvv-custom.yml`
+Save your `vvv-custom.yml`
 
-Step 3: Provision your VVVV
+Step 2: Re-Provision your VVVV
 
 ``` bash
 vagrant provision
 ```
 
+When finished, your VIP site will appear on the dashboard at http://vvv.test and at the hosts specified
