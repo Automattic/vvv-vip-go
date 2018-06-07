@@ -8,6 +8,9 @@ server {
     access_log {vvv_path_to_site}/logs/access.log;
 
     set $upstream {upstream};
+    
+    {{TLS_CERT}}
+    {{TLS_KEY}}
 
     include /etc/nginx/nginx-wp-common.conf;
 
