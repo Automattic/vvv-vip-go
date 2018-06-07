@@ -1,37 +1,49 @@
-# How to use this example bootstrap
-
-This site bootstrap is designed to be used with [Varying Vagrants Vagrant](https://github.com/Varying-Vagrant-Vagrants/VVV/) and a WordPress single site, the code for which is stored as a monolithic (or submoduled, probably) Git(Hub) repo.
-
-# Initial configuration
-
-The following steps allow you to adapt this template to your own VIP Go client repository:
-
-1. Run a search and replace for `site-name.dev` to whatever the subdomain for your development site will be
-2. Run a search and replace for `site_name` to whatever the database name for your development site will be
-3. Run a search and replace for `Site Name` to whatever the human readable name for your development site will be
-
-You can now skip to "Getting up and running", or you want to package these instructions for other developers in your team by following these instructions:
-
-1. Remove these "initial configuration" instructions, leaving the "Development environment bootstrap" heading and everything below it
-2. Test everything works as expected in a [VVV](https://github.com/Varying-Vagrant-Vagrants/VVV/) context
-3. Copy or `git push` to a new repo or new branch in an existing repo
-4. Point people towards the `readme.md` in the repo you pushed to, so they can get going
-
 # Getting up and running
 
-To get started:
+Step 0: Read the docs
 
-1. If you don't already have it, clone the [Vagrant repo](https://github.com/Varying-Vagrant-Vagrants/VVV/) (perhaps into your `~/Vagrants/` directory, you may need to create it if it doesn't already exist)
-2. Install the Vagrant hosts updater: `vagrant plugin install vagrant-hostsupdater` [1]
-3. Clone this repo into the `www` directory of your Vagrant as `www/site-name`
-4. If your Vagrant is running, from the Vagrant directory run `vagrant halt`
-5. Followed by `vagrant up --provision`.  Perhaps a cup of tea now? The initial provisioning may take a while.
-6. If you want the user uploaded files, you'll need to download these separately
+VVV2 [Adding a New Site](https://varyingvagrantvagrants.org/docs/en-US/adding-a-new-site/)
 
-Note that your `wp-content` directory will be moved into place 
+Step 1: Add your site to  `vvv-custom.yml`
 
-Then you can visit: [http://site-name.dev/](http://site-name.dev/)
+Add a site block into `vvv-custom.yml`, like this:
 
-[1] If you do not install the Vagrant hosts updater, you will need to manually alter your `/etc/hosts` file yourself
+``` yml
+  name-your-site-here: 
+    repo: https://github.com/Automattic/vvv-vip-go.git
+    branch: master
+    hosts: 
+     - name-your-site-here.test
+    custom:
+      vip-repo: git@github.com:wpcomvip/demo.git
+      vip-branch: master
+```
 
-This script is free software, and is released under the terms of the <abbr title="GNU General Public License">GPL</abbr> version 2 or (at your option) any later version. See license.txt.
+* Subsitute `name-your-site-here` with the name of your site, this will be used for the directory and will be the basis of the database name
+* Add the HTTP hosts (domains) you need into the `hosts` array
+* You always want to leave the `repo` and `branch` values as they are above, because this is the provisioning script for VVV VIP Go
+* Add your VIP Go client repo into `custom > vip-repo`
+* Add the branch you want to use in your VIP Go client repo into `custom > vip-branch`
+
+For comparison, you'll end up with something like this:
+
+``` yml
+  vip-go-demo: 
+    repo: https://github.com/Automattic/vvv-vip-go.git
+    branch: master
+    hosts: 
+     - vip-go-demo.test
+    custom:
+      vip-repo: git@github.com:wpcomvip/demo.git
+      vip-branch: master
+```
+
+Save your `vvv-custom.yml`
+
+Step 2: Re-Provision your VVVV
+
+``` bash
+vagrant provision
+```
+
+When finished, your VIP site will appear on the dashboard at http://vvv.test and at the hosts specified
