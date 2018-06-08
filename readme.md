@@ -1,10 +1,10 @@
 # Getting up and running
 
-Step 0: Read the docs
+### Step 0: Read the docs
 
 VVV2 [Adding a New Site](https://varyingvagrantvagrants.org/docs/en-US/adding-a-new-site/)
 
-Step 1: Add your site to  `vvv-custom.yml`
+### Step 1: Add your site to  `vvv-custom.yml`
 
 Add a site block into `vvv-custom.yml`, like this:
 
@@ -40,7 +40,7 @@ For comparison, you'll end up with something like this:
 
 Save your `vvv-custom.yml`
 
-Step 2: Re-Provision your VVVV
+### Step 2: Re-Provision your VVVV
 
 ``` bash
 vagrant provision
