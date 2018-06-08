@@ -46,4 +46,10 @@ Step 2: Re-Provision your VVVV
 vagrant provision
 ```
 
+or, on a fresh install
+
+``` bash
+vagrant up --provision
+```
+
 When finished, your VIP site will appear on the dashboard at http://vvv.test and at the hosts specified
